@@ -13,7 +13,10 @@
   "author": "Rinotec",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.5"
   },
   "devDependencies": {
     "eslint": "^8.28.0",

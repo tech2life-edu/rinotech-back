@@ -25,6 +25,9 @@ Rinotec microcompany dedicated to the sale and distribution of accessories for s
 # Dependencies
 
 - Express 📦
+- dotenv 📦
+- cors 📦
+- mongoose 📦
 
 # Dependencies Dev
 
