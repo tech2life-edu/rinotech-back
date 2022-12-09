@@ -2,6 +2,8 @@ import express from 'express';
 import fs from 'node:fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+
 const router = express.Router();
 
 /* Getting the path of the current file. */
@@ -20,20 +22,22 @@ const removeExtension = (filename) => {
 };
 
 
-/* Reading the directory of the current file, filtering out the files that are not needed, and then
-using the router to use the files that are needed. */
 fs.readdirSync(__dirname).filter((file) => {
-   const fileWithoutExtension = removeExtension(file);
-   const skip = ['index'].includes(fileWithoutExtension);
+  const fileWithOutExt = removeExtension(file);
+  const skip = ['index'].includes(fileWithOutExt);
 
-   if (!skip) {
-     router.use(`${fileWithoutExtension}`, () => {
-        `./${fileWithoutExtension}`;//TODO:localhost:3000/api/v1/fileName
-     });
-     console.log(`Route: ${fileWithoutExtension}`);
-   }
-
-
+  if (!skip) {
+    router.use(`/${fileWithOutExt}`, async (req, res, next) => {
+      try {
+        const fileModuleWithoutExtension = await import(`./${fileWithOutExt}.js`);
+        fileModuleWithoutExtension.default(req, res, next);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server error.' });
+      }
+    });
+    console.log(`/${fileWithOutExt}`);
+  }
 });
 
 /* A catch all route. If the route is not found, it will return a 404 error. */
